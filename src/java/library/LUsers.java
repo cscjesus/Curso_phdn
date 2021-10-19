@@ -27,7 +27,7 @@ public class LUsers {
     private HttpSession miSession;
 
     public LUsers() {
-        this.date = new Date();
+        this.date = new Date(); 
     }
 
     private void session() {
@@ -37,10 +37,17 @@ public class LUsers {
     }
     public boolean registrar(User user, HttpServletRequest request){
         try {
+            
             session();
             tx=session.beginTransaction();
             miSession =request.getSession(true);
             String pass = Encrypt.encrypt(user.getPassword());
+            user.setPassword(pass);
+            user.setLastLogin(date);
+            user.setIsActive(true);
+            user.setDateJoined(date);
+            user.setUsername(user.getFirstName());
+            user.setIsSuper(false);
             
         } catch (Exception e) {
             
@@ -49,3 +56,6 @@ public class LUsers {
     }
 
 }
+/*
+https://www.baeldung.com/java-date-to-localdate-and-localdatetime
+*/
