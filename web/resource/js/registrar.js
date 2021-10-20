@@ -8,12 +8,24 @@ class Registrar {
     
         $.post(
                 "register",
-        
                 $('form[name=registrar]').serialize(),
                 (response) => {
-                    console.log(response);
-                    //alert(response+"abc");
-        });
+                    let item = JSON.parse(reponse);
+                    if(item[0]!==null){
+                        if(item[0].firstName !== undefined){
+                            $("#firstName").text(item[0].firstName);
+                            $("#nombre").focus();
+                        }else{
+                            $("#firstName").text("")
+                        }
+                        if(item[0].lastName !== undefined){
+                            $("#lastName").text(item[0].lastName);
+                            $("#apellido").focus();
+                        }else{
+                            $("#lastName").text("")
+                        }
+                    }
+                });
        // alert("ok");
     }
 }

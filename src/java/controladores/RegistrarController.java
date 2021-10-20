@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import library.LUsers;
 import models.User;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,13 @@ import validators.RegistrarValidator;
 public class RegistrarController {
     private final RegistrarValidator validator;
     Map<String,String> errors;
+    private final LUsers users;
+    private boolean valor;
 //inyeccion de clase
     @Autowired
     public RegistrarController(RegistrarValidator validator) {
         this.validator = validator;
+        users= new LUsers();
     }
 
     
@@ -59,10 +63,11 @@ public class RegistrarController {
                     Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage)
                     );
         }else{
-            
+           valor =  users.registrar(user, request);
         }
         Object[] dataObj ={
-        errors
+        errors,
+            valor
         };
        return JSONObject.valueToString(dataObj);
     }

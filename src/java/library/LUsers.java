@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import models.HibernateUtil;
 import models.User;
+import models.UserData;
 import org.hibernate.SessionFactory;
 import validators.Encrypt;
 
@@ -27,7 +28,7 @@ public class LUsers {
     private HttpSession miSession;
 
     public LUsers() {
-        this.date = new Date(); 
+        this.date = new Date();
     }
 
     private void session() {
@@ -35,12 +36,13 @@ public class LUsers {
                 = HibernateUtil.getSessionFactory();
         session = sessionFactory.openSession();
     }
-    public boolean registrar(User user, HttpServletRequest request){
+
+    public boolean registrar(User user, HttpServletRequest request) {
         try {
-            
+
             session();
-            tx=session.beginTransaction();
-            miSession =request.getSession(true);
+            tx = session.beginTransaction();
+            miSession = request.getSession(true);
             String pass = Encrypt.encrypt(user.getPassword());
             user.setPassword(pass);
             user.setLastLogin(date);
@@ -48,9 +50,14 @@ public class LUsers {
             user.setDateJoined(date);
             user.setUsername(user.getFirstName());
             user.setIsSuper(false);
-            
+            session.save(user);//guardar usuario en la bd
+            tx.commit();
+            miSession.setAttribute("user", new UserData(
+                    user.getFirstName(), user.getLastName(),
+                    user.getEmail(), user.getUsername()));
+            return true;
         } catch (Exception e) {
-            
+            tx.rollback();
         }
         return false;
     }
@@ -58,4 +65,4 @@ public class LUsers {
 }
 /*
 https://www.baeldung.com/java-date-to-localdate-and-localdatetime
-*/
+ */
