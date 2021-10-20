@@ -5,9 +5,12 @@
  */
 package library;
 
+import consult.Consult;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import models.HibernateUtil;
@@ -20,7 +23,7 @@ import validators.Encrypt;
  *
  * @author liz
  */
-public class LUsers {
+public class LUsers extends Consult {
 
     private Session session;
     private Transaction tx = null;
@@ -39,23 +42,30 @@ public class LUsers {
 
     public boolean registrar(User user, HttpServletRequest request) {
         try {
+            List<User> listUser = listUsers().stream().filter(u -> u.getEmail().equals(user.getEmail()))
+                    .collect(Collectors.toList());
 
-            session();
-            tx = session.beginTransaction();
-            miSession = request.getSession(true);
-            String pass = Encrypt.encrypt(user.getPassword());
-            user.setPassword(pass);
-            user.setLastLogin(date);
-            user.setIsActive(true);
-            user.setDateJoined(date);
-            user.setUsername(user.getFirstName());
-            user.setIsSuper(false);
-            session.save(user);//guardar usuario en la bd
-            tx.commit();
-            miSession.setAttribute("user", new UserData(
-                    user.getFirstName(), user.getLastName(),
-                    user.getEmail(), user.getUsername()));
-            return true;
+            if (listUser.isEmpty()) {
+                session();
+                tx = session.beginTransaction();
+                miSession = request.getSession(true);
+                String pass = Encrypt.encrypt(user.getPassword());
+                user.setPassword(pass);
+                user.setLastLogin(date);
+                user.setIsActive(true);
+                user.setDateJoined(date);
+                user.setUsername(user.getFirstName());
+                user.setIsSuper(false);
+                session.save(user);//guardar usuario en la bd
+                tx.commit();
+                miSession.setAttribute("user", new UserData(
+                        user.getFirstName(), user.getLastName(),
+                        user.getEmail(), user.getUsername()));
+                return true;
+            }else{
+                return false;
+            }
+
         } catch (Exception e) {
             tx.rollback();
         }

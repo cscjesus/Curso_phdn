@@ -31,6 +31,7 @@
                         <button onclick="new Registrar().register()" class="btn btn-primary btn-block">
                             SingIn
                         </button>
+                         <span id="mensaje" class="mensaje"/>
                     </form>
                 </div>
             </div> 

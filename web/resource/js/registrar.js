@@ -5,11 +5,12 @@
  */
 class Registrar {
     register() {
-    
         $.post(
+                //"registrar",
                 "register",
                 $('form[name=registrar]').serialize(),
                 (response) => {
+                   
                     let item = JSON.parse(reponse);
                     if(item[0]!==null){
                         if(item[0].firstName !== undefined){
@@ -24,8 +25,29 @@ class Registrar {
                         }else{
                             $("#lastName").text("")
                         }
+                        if(item[0].lastName !== undefined){
+                            $("#email").text(item[0].email);
+                            $("#email").focus();
+                        }else{
+                            $("#email").text("")
+                        }
+                        if(item[0].lastName !== undefined){
+                            $("#password").text(item[0].email);
+                            $("#password").focus();
+                        }else{
+                            $("#password").text("")
+                        }
+                    }else{
+                        if(item[1]){
+                            window.location.href =URL+"principal";
+                        }
+                        else{
+                            $("#mensaje").text("Email registrado");
+                        }
                     }
+                    console.log(item);
                 });
+                return false;
        // alert("ok");
     }
 }

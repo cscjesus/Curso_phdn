@@ -7,7 +7,6 @@ package controladores;
 
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import library.LUsers;
