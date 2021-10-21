@@ -5,50 +5,33 @@
  */
 class Registrar {
     register() {
-        $.post(
-                //"registrar",
-                "register",
-                $('form[name=registrar]').serialize(),
-                (response) => {
-                   
-                    let item = JSON.parse(reponse);
-                    if(item[0]!==null){
-                        if(item[0].firstName !== undefined){
-                            $("#firstName").text(item[0].firstName);
-                            $("#nombre").focus();
-                        }else{
-                            $("#firstName").text("")
+
+        $('#registrar').submit(
+                function (event) {
+
+                    var data = $("#registrar").serialize();
+                    $.ajax({
+                        //url: $("#registrar").attr("action"),
+                        url: "registrar",
+                        data: data,
+                        type: "POST",
+
+                        success: function (response) {
+                            let item = JSON.parse(response);
+                            //alert(item);
+                            if (item.agregado) {
+                                window.location.href = "http://localhost:8080/Curso/principal";
+                            } else {
+                                $("#mensaje").text("Email registrado");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            alert(xhr.responseText);
                         }
-                        if(item[0].lastName !== undefined){
-                            $("#lastName").text(item[0].lastName);
-                            $("#apellido").focus();
-                        }else{
-                            $("#lastName").text("")
-                        }
-                        if(item[0].lastName !== undefined){
-                            $("#email").text(item[0].email);
-                            $("#email").focus();
-                        }else{
-                            $("#email").text("")
-                        }
-                        if(item[0].lastName !== undefined){
-                            $("#password").text(item[0].email);
-                            $("#password").focus();
-                        }else{
-                            $("#password").text("")
-                        }
-                    }else{
-                        if(item[1]){
-                            window.location.href =URL+"principal";
-                        }
-                        else{
-                            $("#mensaje").text("Email registrado");
-                        }
-                    }
-                    console.log(item);
+                    });
+                    return false;
                 });
-                return false;
-       // alert("ok");
+        
     }
 }
 

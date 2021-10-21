@@ -18,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.ModelAndView;
 import validators.RegistrarValidator;
@@ -28,48 +29,80 @@ import validators.RegistrarValidator;
  */
 @Controller
 public class RegistrarController {
+
     private final RegistrarValidator validator;
-    Map<String,String> errors;
+    Map<String, String> errors;
     private final LUsers users;
     private boolean valor;
 //inyeccion de clase
+
     @Autowired
     public RegistrarController(RegistrarValidator validator) {
         this.validator = validator;
-        users= new LUsers();
+        users = new LUsers();
     }
 
-    
-    
-    @RequestMapping(value="/registrar")
-    public ModelAndView registrar(){
+    @RequestMapping(value = "/registrar", method = RequestMethod.GET)
+    public ModelAndView registrar() {
         return new ModelAndView();
     }
-    
-    @RequestMapping(method = RequestMethod.POST)
+
     /*La anotación @ResponseBody asigna el cuerpo HttpRequest a un objeto de dominio
     o transferencia, permitiendo la deserialización automática del cuerpo HttpRequest
     entrante en un objeto Java*/
-    /*@Valid verifica si los datos que envía al método son válidos*/
-    /*BindingResult representa resultados vinculantes*/
+ /*@Valid verifica si los datos que envía al método son válidos*/
+ /*BindingResult representa resultados vinculantes*/
+
+    @RequestMapping(value = "/registrar", method = RequestMethod.POST)
+    /*public @ResponseBody String processAJAXRequest(
+            @RequestParam("firstname") String firstname,
+            @RequestParam("lastname") String lastname , BindingResult result,HttpServletRequest request  ) {*/
     public @ResponseBody
-    String register(@Valid User user, BindingResult result, HttpServletRequest request){
-        //System.out.println(user);
+   // String processAJAXRequest(
+    String registrar(
+            @Valid User user, BindingResult result, HttpServletRequest request) {
+
         validator.validate(user, result);
-        if(result.hasErrors()){
-           errors = result.getFieldErrors().stream()
+        if (result.hasErrors()) {
+            errors = result.getFieldErrors().stream()
                     .collect(
-                    Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage)
+                            Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)
                     );
-        }else{
-           valor =  users.registrar(user, request);
+        } else {
+            valor = users.registrar(user, request);
         }
-        Object[] dataObj ={
-        errors,
-            valor
-        };
-       return JSONObject.valueToString(dataObj);
+
+        JSONObject json = new JSONObject();
+        json.put("errors", errors);
+        json.put("agregado", valor);
+        //return JSONObject.valueToString(dataObj);
+        return JSONObject.valueToString(json);
     }
+
+//    @RequestMapping(value = "/registrar", method = RequestMethod.POST)
+//    public @ResponseBody//@Valid 
+//    //String register(User user, BindingResult result, HttpServletRequest request){
+//    String register(User user, HttpServletRequest request) {
+//        //System.out.println(user);
+////        validator.validate(user, result);
+////        if(result.hasErrors()){
+////           errors = result.getFieldErrors().stream()
+////                    .collect(
+////                    Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage)
+////                    );
+////        }else{
+//        valor = users.registrar(user, request);
+////        }
+////        Object[] dataObj ={
+////        errors,
+////            valor
+////        };
+//        JSONObject json = new JSONObject();
+//        json.put("errors", errors);
+//        json.put("agregado", valor);
+//        //return JSONObject.valueToString(dataObj);
+//        return JSONObject.valueToString(json);
+//    }
 }
 
 //https://github.com/stleary/JSON-java
