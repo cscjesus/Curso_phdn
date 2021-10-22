@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+    URL="/Curso/";
 class Registrar {
     register() {
 
@@ -20,9 +21,10 @@ class Registrar {
                             let item = JSON.parse(response);
                             //alert(item);
                             if (item.agregado) {
-                                window.location.href = "http://localhost:8080/Curso/principal";
+                                //window.location.href = "http://localhost:8080/Curso/principal";
+                                window.location.href = URL+ "principal";
                             } else {
-                                $("#mensaje").text("Email registrado");
+                                $("#mensaje").text("Email ya registrado");
                             }
                         },
                         error: function (xhr, status, error) {
@@ -35,3 +37,6 @@ class Registrar {
     }
 }
 
+/*
+ * https://ozenero.com/integrate-jquery-ajax-post-get-spring-boot-web-service
+ */

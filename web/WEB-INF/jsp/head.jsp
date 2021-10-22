@@ -50,6 +50,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link text-dark" href="${pageContext.request.contextPath}/login/">
+                                  Login  
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" href="${pageContext.request.contextPath}/registrar/">
                                   Registrar  
                                 </a>
