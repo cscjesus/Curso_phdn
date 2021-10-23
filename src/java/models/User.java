@@ -107,6 +107,11 @@ public class User  implements java.io.Serializable {
         this.isSuper = isSuper;
     }
 
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", lastLogin=" + lastLogin + ", isActive=" + isActive + ", dateJoined=" + dateJoined + ", password=" + password + ", username=" + username + ", isSuper=" + isSuper + '}';
+    }
+
 
 
 

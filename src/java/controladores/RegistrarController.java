@@ -52,16 +52,14 @@ public class RegistrarController {
     entrante en un objeto Java*/
  /*@Valid verifica si los datos que envía al método son válidos*/
  /*BindingResult representa resultados vinculantes*/
-
     @RequestMapping(value = "/registrar", method = RequestMethod.POST)
-    /*public @ResponseBody String processAJAXRequest(
-            @RequestParam("firstname") String firstname,
-            @RequestParam("lastname") String lastname , BindingResult result,HttpServletRequest request  ) {*/
-    public @ResponseBody
-   // String processAJAXRequest(
-    String registrar(
-            @Valid User user, BindingResult result, HttpServletRequest request) {
+    //@RequestMapping(method = RequestMethod.POST)
 
+    public @ResponseBody
+    String registrar(
+   // String register(
+            @Valid User user, BindingResult result, HttpServletRequest request) {
+        errors=null;
         validator.validate(user, result);
         if (result.hasErrors()) {
             errors = result.getFieldErrors().stream()
@@ -71,39 +69,17 @@ public class RegistrarController {
         } else {
             valor = users.registrar(user, request);
         }
+        Object[] dataObj = {
+            errors,
+            valor
+        };
 
-        JSONObject json = new JSONObject();
-        json.put("errors", errors);
-        json.put("agregado", valor);
-        //return JSONObject.valueToString(dataObj);
-        return JSONObject.valueToString(json);
+return JSONObject.valueToString(dataObj);
     }
 
-//    @RequestMapping(value = "/registrar", method = RequestMethod.POST)
-//    public @ResponseBody//@Valid 
-//    //String register(User user, BindingResult result, HttpServletRequest request){
-//    String register(User user, HttpServletRequest request) {
-//        //System.out.println(user);
-////        validator.validate(user, result);
-////        if(result.hasErrors()){
-////           errors = result.getFieldErrors().stream()
-////                    .collect(
-////                    Collectors.toMap(FieldError::getField,FieldError::getDefaultMessage)
-////                    );
-////        }else{
-//        valor = users.registrar(user, request);
-////        }
-////        Object[] dataObj ={
-////        errors,
-////            valor
-////        };
-//        JSONObject json = new JSONObject();
-//        json.put("errors", errors);
-//        json.put("agregado", valor);
-//        //return JSONObject.valueToString(dataObj);
-//        return JSONObject.valueToString(json);
-//    }
+
 }
 
 //https://github.com/stleary/JSON-java
 
+//https://vitalflux.com/make-ajax-calls-java-spring-mvc/

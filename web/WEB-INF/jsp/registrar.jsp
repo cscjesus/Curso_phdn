@@ -15,22 +15,23 @@
                     <form id="registrar" method="post" action="/Curso/profile">
       
       <div class="form-group">
-                            <input type="text" name="firstName" placeholder="Nombre" class="form-control" autofocus required/>
+          <input type="text" name="firstName" id="nombre" placeholder="Nombre" class="form-control" autofocus required/>
                             <span id="firstName" class="mensaje"/>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="lastName" placeholder="Apellido" class="form-control" required/>
+                            <input type="text" id="apellido" name="lastName" placeholder="Apellido" class="form-control" required/>
                             <span id="lastName" class="mensaje"/>
                         </div>
                         <div class="form-group">
-                            <input type="text" name="email" placeholder="Email" class="form-control" required/>
-                            <span id="email" class="mensaje"/>
+                            <input type="text" id="email"name="email" placeholder="Email" class="form-control" required/>
+                            <span id="email1" class="mensaje"/>
                         </div>
                         <div class="form-group">
-                            <input type="password" name="password" placeholder="Password" class="form-control" required/>
+                            <input type="password" id="pass" name="password" placeholder="Password" class="form-control" required/>
                             <span id="password" class="mensaje"/>
                         </div>
-                        <button onclick="new Registrar().register()" class="btn btn-primary btn-block">
+                        <!--button onclick="new Registrar().register()" class="btn btn-primary btn-block"-->
+                        <button onclick="return new Registrar().register()" class="btn btn-primary btn-block">
                             SingIn
                         </button>
                          <span id="mensaje" class="mensaje"/>
